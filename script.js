@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         rootMargin: '0px 0px -50px 0px'
     });
 
-    document.querySelectorAll('.reveal, .stagger-text').forEach(el => {
+    document.querySelectorAll('.reveal, .reveal-slide, .stagger-text').forEach(el => {
         revealObserver.observe(el);
     });
 

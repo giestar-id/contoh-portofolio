@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio | Modern & Minimal</title>
-    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -34,24 +32,66 @@
             opacity: 1;
             transform: translateY(0);
         }
+        /* New Slide Animation */
+        .reveal-slide {
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-slide.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
         /* Staggered text styles */
         .stagger-text span {
             display: inline-block;
             opacity: 0;
-            transform: translateY(15px);
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(30px) rotateX(90deg);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .stagger-text.active span {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) rotateX(0deg);
+        }
+        /* Hero title animation */
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        @keyframes pulse-glow {
+            0%, 100% { text-shadow: 0 0 20px rgba(79, 70, 229, 0.3); }
+            50% { text-shadow: 0 0 40px rgba(79, 70, 229, 0.6); }
+        }
+        .hero-title-animated {
+            background: linear-gradient(90deg, #4f46e5, #818cf8, #4f46e5);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite, pulse-glow 2s ease-in-out infinite;
+        }
+        /* Typing cursor animation */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 1s step-end infinite;
+            color: #4f46e5;
+            margin-left: 4px;
         }
         /* Mobile menu animation */
         #mobile-menu {
             transform: translateY(-100%);
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0;
+            pointer-events: none;
         }
         #mobile-menu.open {
             transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
         }
         /* Floating animation for photo */
         @keyframes floating {
@@ -66,10 +106,9 @@
 </head>
 <body class="bg-zinc-50 text-zinc-900 font-sans selection:bg-indigo-100 selection:text-indigo-900 overflow-x-hidden">
 
-    <!-- Navbar -->
-    <nav class="fixed top-0 w-full z-[100] transition-all duration-300 backdrop-blur-md bg-white/70 border-b border-zinc-200/50">
-        <div class="max-w-7xl mx-auto px-6 lg:px-12 h-16 md:h-20 flex items-center justify-between">
-            <a href="#" class="text-xl md:text-2xl font-bold tracking-tighter">PORTFOLIO.</a>
+    <nav class="fixed top-0 w-full z-[100] transition-all duration-300 backdrop-blur-md bg-white/80 border-b border-zinc-200/50">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 h-20 md:h-24 flex items-center justify-between">
+            <a href="#" class="text-2xl md:text-3xl font-black tracking-tighter hover:text-indigo-600 transition-colors">PORTFOLIO.</a>
             
             <div class="hidden lg:flex items-center space-x-12 text-sm font-bold text-zinc-500">
                 <a href="#about" class="hover:text-zinc-900 transition-colors uppercase tracking-widest">About</a>
@@ -78,25 +117,24 @@
                 <a href="#contact" class="hover:text-zinc-900 transition-colors uppercase tracking-widest">Contact</a>
             </div>
 
-            <button id="menu-toggle" class="lg:hidden flex flex-col gap-1.5 p-2 focus:outline-none">
-                <span class="w-6 h-0.5 bg-zinc-900 transition-all"></span>
-                <span class="w-6 h-0.5 bg-zinc-900 transition-all"></span>
+            <button id="menu-toggle" class="lg:hidden flex flex-col gap-1.5 p-2 focus:outline-none z-[110] relative">
+                <span class="w-7 h-0.5 bg-zinc-900 transition-transform origin-center duration-300"></span>
+                <span class="w-7 h-0.5 bg-zinc-900 transition-transform origin-center duration-300"></span>
             </button>
         </div>
     </nav>
 
-    <!-- Mobile Menu Overlay -->
-    <div id="mobile-menu" class="fixed inset-0 bg-white z-[90] lg:hidden flex flex-col items-center justify-center space-y-8">
-        <a href="#about" class="mobile-link text-3xl font-black tracking-tighter hover:text-indigo-600">About</a>
-        <a href="#expertise" class="mobile-link text-3xl font-black tracking-tighter hover:text-indigo-600">Expertise</a>
-        <a href="#work" class="mobile-link text-3xl font-black tracking-tighter hover:text-indigo-600">Work</a>
-        <a href="#contact" class="mobile-link text-3xl font-black tracking-tighter hover:text-indigo-600">Contact</a>
+    <div id="mobile-menu" class="fixed inset-0 bg-zinc-50/95 backdrop-blur-xl z-[90] lg:hidden flex flex-col items-center justify-center space-y-10">
+        <a href="#about" class="mobile-link text-4xl font-black tracking-tighter hover:text-indigo-600 transition-colors">About</a>
+        <a href="#expertise" class="mobile-link text-4xl font-black tracking-tighter hover:text-indigo-600 transition-colors">Expertise</a>
+        <a href="#work" class="mobile-link text-4xl font-black tracking-tighter hover:text-indigo-600 transition-colors">Work</a>
+        <a href="#contact" class="mobile-link text-4xl font-black tracking-tighter hover:text-indigo-600 transition-colors">Contact</a>
     </div>
 
-    <!-- Hero Section -->
-    <section id="home" class="min-h-screen pt-32 pb-16 px-6 lg:px-12 max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-        <div class="flex-1 space-y-8 text-center lg:text-left order-2 lg:order-1">
-            <h1 class="text-5xl xs:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[1] stagger-text" id="hero-title">
+    <section id="home" class="min-h-screen pt-32 lg:pt-40 pb-16 px-6 lg:px-12 max-w-7xl mx-auto flex flex-col-reverse lg:flex-row items-center justify-center gap-16 lg:gap-20">
+        
+        <div class="flex-1 space-y-8 text-center lg:text-left w-full relative z-10">
+            <h1 class="text-5xl xs:text-6xl md:text-7xl lg:text-[5.5rem] xl:text-8xl font-black tracking-tighter leading-[1.05] stagger-text" id="hero-title">
                 Crafting <br>
                 <span class="text-indigo-600">Digital</span> <br>
                 Excellence.
@@ -104,36 +142,44 @@
             <p class="text-lg md:text-xl text-zinc-500 max-w-lg mx-auto lg:mx-0 leading-relaxed reveal">
                 I help brands stand out through minimal design and high-performance digital solutions that drive results.
             </p>
-            <div class="pt-4 flex flex-col xs:flex-row items-center justify-center lg:justify-start gap-6 reveal">
-                <a href="#work" class="w-full xs:w-auto bg-zinc-900 text-white px-10 py-5 rounded-full font-bold hover:bg-zinc-800 transition-all hover:shadow-2xl active:scale-95 text-center">
+            <div class="pt-6 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-6 reveal">
+                <a href="#work" class="w-full sm:w-auto bg-zinc-900 text-white px-10 py-5 rounded-full font-bold hover:bg-zinc-800 transition-all shadow-xl hover:shadow-2xl active:scale-95 text-center">
                     Explore Projects
                 </a>
-                <a href="#about" class="text-zinc-900 font-bold hover:underline underline-offset-8 decoration-2 transition-all">
-                    My Story &rarr;
+                <a href="#about" class="w-full sm:w-auto text-zinc-900 font-bold hover:text-indigo-600 py-4 sm:py-5 transition-all text-center group flex items-center justify-center gap-2">
+                    <span class="underline underline-offset-8 decoration-2 group-hover:decoration-indigo-600">My Story</span>
+                    <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
                 </a>
             </div>
         </div>
-        
-        <div class="flex-1 w-full max-w-sm sm:max-w-md lg:max-w-xl reveal order-1 lg:order-2" style="transition-delay: 300ms;">
-            <div class="relative group float-photo">
-                <div class="absolute -inset-4 sm:-inset-6 bg-indigo-50 rounded-[2.5rem] sm:rounded-[3rem] -rotate-3 lg:-rotate-6 transition-transform group-hover:rotate-0 duration-1000"></div>
-                <div class="absolute inset-0 bg-indigo-100/30 rounded-[2.5rem] sm:rounded-[3rem] rotate-3 lg:rotate-6 transition-transform group-hover:rotate-0 duration-1000"></div>
+
+        <div class="flex-1 w-full flex justify-center lg:justify-end reveal relative z-0" style="transition-delay: 200ms;">
+            <div class="relative group float-photo w-full max-w-[280px] sm:max-w-[340px] md:max-w-[400px] lg:max-w-lg">
+                <div class="absolute -inset-4 sm:-inset-6 bg-indigo-50 rounded-[2.5rem] sm:rounded-[3rem] -rotate-6 transition-transform group-hover:rotate-0 duration-1000"></div>
+                <div class="absolute inset-0 bg-indigo-100/40 rounded-[2.5rem] sm:rounded-[3rem] rotate-6 transition-transform group-hover:rotate-0 duration-1000"></div>
                 
-                <div class="relative aspect-[4/5] bg-zinc-200 rounded-[2.5rem] sm:rounded-[3rem] overflow-hidden shadow-2xl transition-transform group-hover:scale-[1.02] duration-1000">
-                    <img src="foto.png" alt="Hero Profile Photo" class="w-full h-full object-cover block" style="object-position: center 20%;">
+                <div class="relative aspect-[4/5] bg-zinc-200 rounded-[2.5rem] sm:rounded-[3rem] overflow-hidden shadow-2xl transition-transform group-hover:scale-[1.02] duration-1000 border-4 border-white">
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80" alt="Hero Profile" class="w-full h-full object-cover block object-center">
+                </div>
+                
+                <div class="absolute -bottom-8 -left-8 bg-white p-4 rounded-2xl shadow-xl flex items-center gap-4 animate-bounce" style="animation-duration: 3s;">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 font-black">
+                        ✦
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-zinc-400 uppercase tracking-widest">Available For</p>
+                        <p class="font-black text-sm text-zinc-900">Freelance</p>
+                    </div>
                 </div>
             </div>
         </div>
+
     </section>
 
-    <!-- About Section -->
     <section id="about" class="py-24 md:py-32 px-6 lg:px-12 bg-white">
         <div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16 md:gap-24">
             <div class="flex-1 reveal">
-                <div class="relative inline-block mb-12">
-                    <div class="absolute -inset-2 bg-indigo-600 rounded-2xl rotate-6 opacity-20"></div>
-                    <img src="foto.png" alt="About Photo" class="w-32 h-32 md:w-48 md:h-48 rounded-2xl object-cover shadow-xl border-4 border-white relative z-10">
-                </div>
+                
                 <span class="text-indigo-600 font-bold tracking-[0.2em] uppercase text-xs mb-4 block">A Little About Me</span>
                 <h2 class="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter mb-8 stagger-text">Passion for Perfection.</h2>
                 <p class="text-lg md:text-xl text-zinc-500 leading-relaxed space-y-6">
@@ -163,7 +209,6 @@
         </div>
     </section>
 
-    <!-- Expertise Section -->
     <section id="expertise" class="py-24 md:py-32 px-6 lg:px-12 bg-zinc-50">
         <div class="max-w-7xl mx-auto">
             <div class="flex flex-col lg:flex-row justify-between items-start gap-8 lg:gap-12 mb-16 md:mb-24">
@@ -207,7 +252,6 @@
         </div>
     </section>
 
-    <!-- Work Section (Keep simplified for focus) -->
     <section id="work" class="py-24 md:py-32 px-6 lg:px-12 max-w-7xl mx-auto">
         <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16 md:mb-24">
             <div class="space-y-4">
@@ -245,7 +289,6 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
     <section id="contact" class="py-24 md:py-32 px-6 lg:px-12 bg-zinc-900 text-white">
         <div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between gap-16 lg:gap-24">
             <div class="space-y-12 lg:space-y-16 flex-1 reveal text-center lg:text-left">
@@ -266,17 +309,193 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="py-12 px-6 lg:px-12 bg-zinc-900 border-t border-zinc-800 text-zinc-500 text-center lg:text-left">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em]">
-            <div class="flex items-center gap-3">
-                <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-                <span class="text-zinc-400">Available now</span>
-            </div>
-            <p>&copy; 2026 DESIGN HOUSE. CREATED BY YOU.</p>
-        </div>
-    </footer>
+    <script>
+        // Typewriter Animation for Hero Title
+        const heroTitle = document.getElementById('hero-title');
+        
+        // Save original HTML
+        const originalHTML = heroTitle.innerHTML;
+        
+        // Clear the title
+        heroTitle.innerHTML = '';
+        heroTitle.classList.add('active');
+        
+        // Parse the original HTML into segments
+        // Each segment is either text or an element (like <span>)
+        function parseHTMLSegments(html) {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+            const segments = [];
+            
+            function processNode(node) {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    if (node.textContent) {
+                        segments.push({ type: 'text', content: node.textContent });
+                    }
+                } else if (node.nodeType === Node.ELEMENT_NODE) {
+                    if (node.tagName === 'BR') {
+                        segments.push({ type: 'br' });
+                    } else if (node.tagName === 'SPAN' && node.className.includes('text-indigo-600')) {
+                        segments.push({ 
+                            type: 'span', 
+                            content: node.textContent, 
+                            className: node.className 
+                        });
+                    } else {
+                        // Process child nodes
+                        node.childNodes.forEach(child => processNode(child));
+                    }
+                }
+            }
+            
+            Array.from(tempDiv.childNodes).forEach(processNode);
+            return segments;
+        }
+        
+        const segments = parseHTMLSegments(originalHTML);
+        
+        // Calculate total characters for timing
+        let totalChars = 0;
+        segments.forEach(seg => {
+            if (seg.type === 'text' || seg.type === 'span') {
+                totalChars += seg.content.length;
+            }
+        });
+        
+        // Typewriter effect
+        let charIndex = 0;
+        let currentSegmentIndex = 0;
+        let currentCharInSegment = 0;
+        let currentElement = null;
+        
+        const typingSpeed = 80; // ms per character
+        const startDelay = 500; // ms before starting
+        
+        function typeNextCharacter() {
+            if (currentSegmentIndex >= segments.length) {
+                return; // Done
+            }
+            
+            const segment = segments[currentSegmentIndex];
+            
+            if (segment.type === 'br') {
+                heroTitle.appendChild(document.createElement('br'));
+                currentSegmentIndex++;
+                currentCharInSegment = 0;
+                setTimeout(typeNextCharacter, typingSpeed);
+            } else if (segment.type === 'text') {
+                if (!currentElement) {
+                    currentElement = document.createElement('span');
+                    currentElement.style.opacity = '0';
+                    currentElement.style.transform = 'translateY(30px) rotateX(90deg)';
+                    currentElement.style.display = 'inline-block';
+                    currentElement.style.transition = 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+                    heroTitle.appendChild(currentElement);
+                }
+                
+                if (currentCharInSegment < segment.content.length) {
+                    // Add next character
+                    currentElement.textContent += segment.content[currentCharInSegment];
+                    currentCharInSegment++;
+                    
+                    // Animate this character
+                    setTimeout(() => {
+                        currentElement.style.opacity = '1';
+                        currentElement.style.transform = 'translateY(0) rotateX(0deg)';
+                    }, 10);
+                    
+                    setTimeout(typeNextCharacter, typingSpeed);
+                } else {
+                    // Move to next segment
+                    currentSegmentIndex++;
+                    currentCharInSegment = 0;
+                    currentElement = null;
+                    setTimeout(typeNextCharacter, typingSpeed * 2); // Slight pause at word end
+                }
+            } else if (segment.type === 'span') {
+                if (!currentElement) {
+                    currentElement = document.createElement('span');
+                    currentElement.className = segment.className;
+                    currentElement.style.opacity = '0';
+                    currentElement.style.transform = 'translateY(30px) rotateX(90deg)';
+                    currentElement.style.display = 'inline-block';
+                    currentElement.style.transition = 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+                    heroTitle.appendChild(currentElement);
+                }
+                
+                if (currentCharInSegment < segment.content.length) {
+                    // Add next character
+                    currentElement.textContent += segment.content[currentCharInSegment];
+                    currentCharInSegment++;
+                    
+                    // Animate this character
+                    setTimeout(() => {
+                        currentElement.style.opacity = '1';
+                        currentElement.style.transform = 'translateY(0) rotateX(0deg)';
+                    }, 10);
+                    
+                    setTimeout(typeNextCharacter, typingSpeed);
+                } else {
+                    // Move to next segment
+                    currentSegmentIndex++;
+                    currentCharInSegment = 0;
+                    currentElement = null;
+                    setTimeout(typeNextCharacter, typingSpeed * 2);
+                }
+            }
+        }
+        
+        // Start typewriter after delay
+        setTimeout(typeNextCharacter, startDelay);
+        
+        // Blinking cursor effect during typing
+        heroTitle.classList.add('typing-cursor');
+        setTimeout(() => {
+            heroTitle.classList.remove('typing-cursor');
+        }, startDelay + (totalChars * typingSpeed) + 1000);
 
-    <script src="script.js"></script>
+        // Animasi Scroll Reveal
+        const reveals = document.querySelectorAll('.reveal, .stagger-text');
+        const activeReveals = () => {
+            reveals.forEach(reveal => {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveal.getBoundingClientRect().top;
+                const elementVisible = 100;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('active');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', activeReveals);
+        activeReveals(); // Jalankan saat pertama kali dimuat
+
+        // Logika Navbar Mobile
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+        const toggleLines = menuToggle.querySelectorAll('span');
+
+        const toggleNav = () => {
+            const isOpen = mobileMenu.classList.toggle('open');
+            
+            // Animasi tombol Hamburger menjadi X
+            if (isOpen) {
+                toggleLines[0].style.transform = 'translateY(4px) rotate(45deg)';
+                toggleLines[1].style.transform = 'translateY(-4px) rotate(-45deg)';
+            } else {
+                toggleLines[0].style.transform = 'translateY(0) rotate(0)';
+                toggleLines[1].style.transform = 'translateY(0) rotate(0)';
+            }
+        };
+
+        menuToggle.addEventListener('click', toggleNav);
+        
+        // Tutup menu saat link diklik
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', toggleNav);
+        });
+    </script>
 </body>
 </html>
